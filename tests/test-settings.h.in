@@ -1,0 +1,24 @@
+#pragma once
+
+namespace test::settings
+{
+
+static constexpr const char *TEST_DATA_DIR{"@TEST_DATA_DIR@"};
+static constexpr const char *INI_PATH{"@INI_PATH@"};
+
+// Application settings
+static constexpr const char *APP_NAME{"@APP_NAME@"};
+static constexpr const char *APP_VERSION{"@APP_VERSION@"};
+static constexpr int DEBUG_MODE{@DEBUG_MODE@};
+
+// Display settings
+static constexpr int DISPLAY_WIDTH{@DISPLAY_WIDTH@};
+static constexpr int DISPLAY_HEIGHT{@DISPLAY_HEIGHT@};
+static constexpr double REFRESH_RATE{@REFRESH_RATE@};
+
+// Advanced settings
+static constexpr int CACHE_SIZE{@CACHE_SIZE@};
+static constexpr int THREADS_COUNT{@THREADS_COUNT@};
+static constexpr const char *PERFORMANCE_MODE{"@PERFORMANCE_MODE@"};
+
+} // namespace test::settings
