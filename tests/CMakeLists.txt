@@ -12,7 +12,7 @@ set(DEBUG_MODE 0)
 set(CACHE_SIZE 1024)
 set(THREADS_COUNT 8)
 set(PERFORMANCE_MODE "high")
-set(TEST_DATA_DIR "${CMAKE_CURRENT_SOURCE_DIR}/data")
+set(TEST_DATA_DIR "${CMAKE_CURRENT_BINARY_DIR}/data")
 set(INI_PATH "${TEST_DATA_DIR}/test-settings.ini")
 
 # Generate the test settings header file

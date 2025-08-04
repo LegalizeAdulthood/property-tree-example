@@ -5,6 +5,7 @@
   "version-semver": "1.0.0",
   "dependencies": [
     "boost-property-tree",
-    "gtest"
+    "gtest",
+    "tcb-span"
   ]
 }
