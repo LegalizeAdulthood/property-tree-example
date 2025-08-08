@@ -26,7 +26,7 @@ add_executable("test-settings"
     "test-settings.ini.in"
     "${CMAKE_CURRENT_BINARY_DIR}/include/test-settings.h"
     "${CMAKE_CURRENT_BINARY_DIR}/data/test-settings.ini"
-    "test-settings.cpp"
+    "test-generic-ini.cpp"
 )
 source_group("CMake Templates" FILES
     "test-settings.h.in"

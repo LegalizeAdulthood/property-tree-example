@@ -1,4 +1,4 @@
-#include <settings/settings.h>
+#include <settings/generic.h>
 
 int main()
 {

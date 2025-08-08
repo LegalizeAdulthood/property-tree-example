@@ -6,7 +6,7 @@
 #include <variant>
 #include <vector>
 
-namespace settings
+namespace settings::generic
 {
 
 using Value = std::variant<int, double, std::string>;
@@ -17,7 +17,12 @@ struct Section
 };
 using Settings = std::vector<Section>;
 
+namespace ini
+{
+
 Settings load(const std::filesystem::path &path);
 void save(const Settings &settings, const std::filesystem::path &path);
+
+} // namespace ini
 
 } // namespace settings

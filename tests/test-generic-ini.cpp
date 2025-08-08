@@ -1,4 +1,4 @@
-#include <settings/settings.h>
+#include <settings/generic.h>
 
 #include "test-settings.h"
 
@@ -6,24 +6,24 @@
 
 #include <gtest/gtest.h>
 
-TEST(TestSettings, loadFirstSection)
+TEST(TestSettings, loadIniFirstSection)
 {
     const std::filesystem::path ini_path{test::settings::INI_PATH};
 
-    const settings::Settings settings{settings::load(ini_path)};
+    const settings::generic::Settings settings{settings::generic::ini::load(ini_path)};
 
-    const settings::Section &section = settings.at(0);
+    const settings::generic::Section &section = settings.at(0);
     EXPECT_EQ("General", section.name);
     EXPECT_EQ(std::get<std::string>(section.values.at("ApplicationName")), test::settings::APP_NAME);
     EXPECT_EQ(std::get<std::string>(section.values.at("Version")), test::settings::APP_VERSION);
     EXPECT_EQ(std::get<int>(section.values.at("Debug")), test::settings::DEBUG_MODE);
 }
 
-TEST(TestSettings, loadAllSections)
+TEST(TestSettings, loadIniAllSections)
 {
     const std::filesystem::path ini_path{test::settings::INI_PATH};
 
-    const settings::Settings settings{settings::load(ini_path)};
+    const settings::generic::Settings settings{settings::generic::ini::load(ini_path)};
 
     EXPECT_EQ(4U, settings.size());
     EXPECT_EQ("General", settings.at(0).name);
@@ -32,13 +32,13 @@ TEST(TestSettings, loadAllSections)
     EXPECT_EQ("Advanced", settings.at(3).name);
 }
 
-TEST(TestSettings, save)
+TEST(TestSettings, saveIni)
 {
     std::filesystem::path ini_path{test::settings::TEST_DATA_DIR};
     ini_path /= "output.ini";
     std::filesystem::remove(ini_path);
     // clang-format off
-    const settings::Settings testSettings{
+    const settings::generic::Settings testSettings{
         {
             "General",
             {
@@ -74,7 +74,7 @@ TEST(TestSettings, save)
     };
     // clang-format on
 
-    settings::save(testSettings, ini_path);
+    settings::generic::ini::save(testSettings, ini_path);
 
     EXPECT_TRUE(std::filesystem::exists(ini_path)) << ini_path << " does not exist";
 }

@@ -1,4 +1,4 @@
-#include "settings/settings.h"
+#include "settings/generic.h"
 
 #include <boost/property_tree/ini_parser.hpp>
 #include <boost/property_tree/ptree.hpp>
@@ -8,7 +8,7 @@
 #include <stdexcept>
 #include <string>
 
-namespace settings
+namespace settings::generic
 {
 
 namespace
@@ -70,6 +70,9 @@ constexpr SectionDesc SECTIONS[]{ADVANCED, DISPLAY, GENERAL, USER};
 constexpr tcb::span<const SectionDesc> SETTINGS{SECTIONS};
 
 } // namespace
+
+namespace ini
+{
 
 Settings load(const std::filesystem::path &path)
 {
@@ -146,4 +149,5 @@ void save(const Settings &settings, const std::filesystem::path &path)
     boost::property_tree::ini_parser::write_ini(path.string(), pt);
 }
 
-} // namespace settings
+} // namespace ini
+} // namespace settings::generic
