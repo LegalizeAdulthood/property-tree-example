@@ -25,4 +25,12 @@ void save(const Settings &settings, const std::filesystem::path &path);
 
 } // namespace ini
 
+namespace json
+{
+
+Settings load(const std::filesystem::path &path);
+void save(const Settings &settings, const std::filesystem::path &path);
+
+} // namespace json
+
 } // namespace settings

@@ -5,6 +5,7 @@ namespace test::settings
 
 static constexpr const char *TEST_DATA_DIR{"@TEST_DATA_DIR@"};
 static constexpr const char *INI_PATH{"@INI_PATH@"};
+static constexpr const char *JSON_PATH{"@JSON_PATH@"};
 
 // Application settings
 static constexpr const char *APP_NAME{"@APP_NAME@"};

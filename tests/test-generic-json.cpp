@@ -6,11 +6,11 @@
 
 #include <gtest/gtest.h>
 
-TEST(TestSettings, loadIniFirstSection)
+TEST(TestSettings, loadJsonFirstSection)
 {
-    const std::filesystem::path ini_path{test::settings::INI_PATH};
+    const std::filesystem::path json_path{test::settings::JSON_PATH};
 
-    const settings::generic::Settings settings{settings::generic::ini::load(ini_path)};
+    const settings::generic::Settings settings{settings::generic::json::load(json_path)};
 
     const settings::generic::Section &section = settings.at(0);
     EXPECT_EQ("General", section.name);
@@ -19,11 +19,11 @@ TEST(TestSettings, loadIniFirstSection)
     EXPECT_EQ(std::get<int>(section.values.at("Debug")), test::settings::DEBUG_MODE);
 }
 
-TEST(TestSettings, loadIniAllSections)
+TEST(TestSettings, loadJsonAllSections)
 {
-    const std::filesystem::path ini_path{test::settings::INI_PATH};
+    const std::filesystem::path json_path{test::settings::JSON_PATH};
 
-    const settings::generic::Settings settings{settings::generic::ini::load(ini_path)};
+    const settings::generic::Settings settings{settings::generic::json::load(json_path)};
 
     EXPECT_EQ(4U, settings.size());
     EXPECT_EQ("General", settings.at(0).name);
@@ -32,11 +32,11 @@ TEST(TestSettings, loadIniAllSections)
     EXPECT_EQ("Advanced", settings.at(3).name);
 }
 
-TEST(TestSettings, saveIni)
+TEST(TestSettings, saveJson)
 {
-    std::filesystem::path ini_path{test::settings::INI_PATH};
-    ini_path.replace_filename("output.ini");
-    std::filesystem::remove(ini_path);
+    std::filesystem::path json_path{test::settings::JSON_PATH};
+    json_path.replace_filename("output.json");
+    std::filesystem::remove(json_path);
     // clang-format off
     const settings::generic::Settings testSettings{
         {
@@ -74,7 +74,7 @@ TEST(TestSettings, saveIni)
     };
     // clang-format on
 
-    settings::generic::ini::save(testSettings, ini_path);
+    settings::generic::json::save(testSettings, json_path);
 
-    EXPECT_TRUE(std::filesystem::exists(ini_path)) << ini_path << " does not exist";
+    EXPECT_TRUE(std::filesystem::exists(json_path)) << json_path << " does not exist";
 }

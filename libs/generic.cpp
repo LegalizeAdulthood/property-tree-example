@@ -1,6 +1,7 @@
 #include "settings/generic.h"
 
 #include <boost/property_tree/ini_parser.hpp>
+#include <boost/property_tree/json_parser.hpp>
 #include <boost/property_tree/ptree.hpp>
 #include <tcb/span.hpp>
 
@@ -69,16 +70,9 @@ constexpr SectionDesc SECTIONS[]{ADVANCED, DISPLAY, GENERAL, USER};
 
 constexpr tcb::span<const SectionDesc> SETTINGS{SECTIONS};
 
-} // namespace
-
-namespace ini
-{
-
-Settings load(const std::filesystem::path &path)
+Settings ptree_to_settings(boost::property_tree::ptree pt)
 {
     Settings result;
-    boost::property_tree::ptree pt;
-    boost::property_tree::ini_parser::read_ini(path.string(), pt);
     for (const auto &sec : pt)
     {
         Section section;
@@ -88,26 +82,18 @@ Settings load(const std::filesystem::path &path)
         for (const auto &item : sec.second)
         {
             const std::string &key = item.first;
-            const std::string &text = item.second.get_value<std::string>();
             const ValueDesc &value_desc{*std::find_if(sec_desc.values.begin(), sec_desc.values.end(),
                 [&](const ValueDesc &desc) { return desc.name == key; })};
-            size_t pos;
             switch (value_desc.type)
             {
             case ValueType::INTEGER:
-                if (const int value = std::stoi(text, &pos); pos == text.length())
-                {
-                    section.values[key] = value;
-                }
+                section.values[key] = item.second.get_value<int>();
                 break;
             case ValueType::FLOATING_POINT:
-                if (const double value = std::stod(text, &pos); pos == text.length())
-                {
-                    section.values[key] = value;
-                }
+                section.values[key] = item.second.get_value<double>();
                 break;
             case ValueType::TEXT:
-                section.values[key] = text;
+                section.values[key] = item.second.get_value<std::string>();;
                 break;
             }
         }
@@ -117,7 +103,7 @@ Settings load(const std::filesystem::path &path)
     return result;
 }
 
-void save(const Settings &settings, const std::filesystem::path &path)
+boost::property_tree::ptree settings_to_ptree(const Settings &settings)
 {
     boost::property_tree::ptree pt;
     for (const Section &section : settings)
@@ -146,8 +132,43 @@ void save(const Settings &settings, const std::filesystem::path &path)
         }
         pt.add_child(section.name, sec_tree);
     }
-    boost::property_tree::ini_parser::write_ini(path.string(), pt);
+    return pt;
+}
+
+} // namespace
+
+namespace ini
+{
+
+Settings load(const std::filesystem::path &path)
+{
+    boost::property_tree::ptree pt;
+    boost::property_tree::ini_parser::read_ini(path.string(), pt);
+    return ptree_to_settings(pt);
+}
+
+void save(const Settings &settings, const std::filesystem::path &path)
+{
+    boost::property_tree::ini_parser::write_ini(path.string(), settings_to_ptree(settings));
 }
 
 } // namespace ini
+
+namespace json
+{
+
+Settings load(const std::filesystem::path &path)
+{
+    boost::property_tree::ptree pt;
+    boost::property_tree::json_parser::read_json(path.string(), pt);
+    return ptree_to_settings(pt);
+}
+
+void save(const Settings &settings, const std::filesystem::path &path)
+{
+    boost::property_tree::json_parser::write_json(path.string(), settings_to_ptree(settings));
+}
+
+} // namespace json
+
 } // namespace settings::generic
