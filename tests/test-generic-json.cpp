@@ -14,9 +14,9 @@ TEST(TestSettingsGenericJson, loadFirstSection)
 
     const settings::generic::Section &section = settings.at(0);
     EXPECT_EQ("General", section.name);
-    EXPECT_EQ(std::get<std::string>(section.values.at("ApplicationName")), test::settings::APP_NAME);
-    EXPECT_EQ(std::get<std::string>(section.values.at("Version")), test::settings::APP_VERSION);
-    EXPECT_EQ(std::get<int>(section.values.at("Debug")), test::settings::DEBUG_MODE);
+    EXPECT_EQ(test::settings::APP_NAME, std::get<std::string>(section.values.at("ApplicationName")));
+    EXPECT_EQ(test::settings::APP_VERSION, std::get<std::string>(section.values.at("Version")));
+    EXPECT_EQ(test::settings::DEBUG_MODE, std::get<int>(section.values.at("Debug")));
 }
 
 TEST(TestSettingsGenericJson, loadAllSections)
