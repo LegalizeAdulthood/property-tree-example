@@ -4,6 +4,7 @@
   "description": "Sample code for the Utah C++ Programmers video Managing Settings with Boost.PropertyTree",
   "version-semver": "1.0.0",
   "dependencies": [
+    "boost-program-options",
     "boost-property-tree",
     "gtest",
     "tcb-span"
