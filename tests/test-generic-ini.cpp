@@ -28,9 +28,21 @@ TEST(TestSettingsGenericIni, loadAllSections)
     EXPECT_EQ(4U, settings.size());
     const settings::generic::Section &general{settings.at(0)};
     EXPECT_EQ("General", general.name);
-    EXPECT_EQ("Display", settings.at(1).name);
-    EXPECT_EQ("User", settings.at(2).name);
-    EXPECT_EQ("Advanced", settings.at(3).name);
+    const settings::generic::Section &display{settings.at(1)};
+    EXPECT_EQ("Display", display.name);
+    EXPECT_EQ(test::settings::DISPLAY_WIDTH, std::get<int>(display.values.at("Width")));
+    EXPECT_EQ(test::settings::DISPLAY_HEIGHT, std::get<int>(display.values.at("Height")));
+    EXPECT_NEAR(test::settings::REFRESH_RATE, std::get<double>(display.values.at("RefreshRate")), 1e-6);
+    const settings::generic::Section &user{settings.at(2)};
+    EXPECT_EQ("User", user.name);
+    EXPECT_EQ(test::settings::USER_NAME, std::get<std::string>(user.values.at("Name")));
+    EXPECT_EQ(test::settings::USER_EMAIL, std::get<std::string>(user.values.at("Email")));
+    EXPECT_EQ(test::settings::USER_LAST_LOGIN, std::get<std::string>(user.values.at("LastLogin")));
+    const settings::generic::Section &advanced{settings.at(3)};
+    EXPECT_EQ("Advanced", advanced.name);
+    EXPECT_EQ(test::settings::CACHE_SIZE, std::get<int>(advanced.values.at("CacheSize")));
+    EXPECT_EQ(test::settings::THREADS_COUNT, std::get<int>(advanced.values.at("Threads")));
+    EXPECT_EQ(test::settings::PERFORMANCE_MODE, std::get<std::string>(advanced.values.at("PerformanceMode")));
 }
 
 TEST(TestSettingsGenericIni, save)
