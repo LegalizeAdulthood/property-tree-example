@@ -52,9 +52,9 @@ TEST(TestSettingsCustomIni, save)
             test::settings::REFRESH_RATE,
         },
         {
-            "TestUser",
-            "test@example.com",
-            "2023-01-01",
+            test::settings::USER_NAME,
+            test::settings::USER_EMAIL,
+            test::settings::USER_LAST_LOGIN,
         },
         {
             test::settings::CACHE_SIZE,

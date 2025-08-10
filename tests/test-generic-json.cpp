@@ -58,9 +58,9 @@ TEST(TestSettingsGenericJson, save)
         {
             "User",
             {
-                {"Name", "TestUser"},
-                {"Email", "test@example.com"},
-                {"LastLogin", "2023-01-01"},
+                {"Name", test::settings::USER_NAME},
+                {"Email", test::settings::USER_EMAIL},
+                {"LastLogin", test::settings::USER_LAST_LOGIN},
             }
         },
         {
