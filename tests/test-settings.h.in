@@ -17,6 +17,11 @@ static constexpr int DISPLAY_WIDTH{@DISPLAY_WIDTH@};
 static constexpr int DISPLAY_HEIGHT{@DISPLAY_HEIGHT@};
 static constexpr double REFRESH_RATE{@REFRESH_RATE@};
 
+// User settings
+static constexpr const char *USER_NAME{"@USER_NAME@"};
+static constexpr const char *USER_EMAIL{"@USER_EMAIL@"};
+static constexpr const char *USER_LAST_LOGIN{"@USER_LAST_LOGIN@"};
+
 // Advanced settings
 static constexpr int CACHE_SIZE{@CACHE_SIZE@};
 static constexpr int THREADS_COUNT{@THREADS_COUNT@};

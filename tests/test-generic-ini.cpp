@@ -6,7 +6,7 @@
 
 #include <gtest/gtest.h>
 
-TEST(TestSettings, loadIniFirstSection)
+TEST(TestSettingsGenericIni, loadFirstSection)
 {
     const std::filesystem::path ini_path{test::settings::INI_PATH};
 
@@ -14,28 +14,29 @@ TEST(TestSettings, loadIniFirstSection)
 
     const settings::generic::Section &section = settings.at(0);
     EXPECT_EQ("General", section.name);
-    EXPECT_EQ(std::get<std::string>(section.values.at("ApplicationName")), test::settings::APP_NAME);
-    EXPECT_EQ(std::get<std::string>(section.values.at("Version")), test::settings::APP_VERSION);
-    EXPECT_EQ(std::get<int>(section.values.at("Debug")), test::settings::DEBUG_MODE);
+    EXPECT_EQ(test::settings::APP_NAME, std::get<std::string>(section.values.at("ApplicationName")));
+    EXPECT_EQ(test::settings::APP_VERSION, std::get<std::string>(section.values.at("Version")));
+    EXPECT_EQ(test::settings::DEBUG_MODE, std::get<int>(section.values.at("Debug")));
 }
 
-TEST(TestSettings, loadIniAllSections)
+TEST(TestSettingsGenericIni, loadAllSections)
 {
     const std::filesystem::path ini_path{test::settings::INI_PATH};
 
     const settings::generic::Settings settings{settings::generic::ini::load(ini_path)};
 
     EXPECT_EQ(4U, settings.size());
-    EXPECT_EQ("General", settings.at(0).name);
+    const settings::generic::Section &general{settings.at(0)};
+    EXPECT_EQ("General", general.name);
     EXPECT_EQ("Display", settings.at(1).name);
     EXPECT_EQ("User", settings.at(2).name);
     EXPECT_EQ("Advanced", settings.at(3).name);
 }
 
-TEST(TestSettings, saveIni)
+TEST(TestSettingsGenericIni, save)
 {
     std::filesystem::path ini_path{test::settings::INI_PATH};
-    ini_path.replace_filename("output.ini");
+    ini_path.replace_filename("generic.ini");
     std::filesystem::remove(ini_path);
     // clang-format off
     const settings::generic::Settings testSettings{

@@ -5,10 +5,13 @@ find_package(GTest CONFIG REQUIRED)
 # Define configuration variables to be used in both INI file and tests
 set(APP_NAME "PropertyTreeExample")
 set(APP_VERSION "1.0")
+set(DEBUG_MODE 0)
 set(DISPLAY_WIDTH 1920)
 set(DISPLAY_HEIGHT 1080)
 set(REFRESH_RATE 60.0)
-set(DEBUG_MODE 0)
+set(USER_NAME "TestUser")
+set(USER_EMAIL "test@example.com")
+set(USER_LAST_LOGIN "2023-01-01")
 set(CACHE_SIZE 1024)
 set(THREADS_COUNT 8)
 set(PERFORMANCE_MODE "high")
@@ -32,6 +35,8 @@ add_executable("test-settings"
     "${CMAKE_CURRENT_BINARY_DIR}/data/test-settings.json"
     "test-generic-ini.cpp"
     "test-generic-json.cpp"
+    "test-custom-ini.cpp"
+    "test-custom-json.cpp"
 )
 source_group("CMake Templates" FILES
     "test-settings.h.in"

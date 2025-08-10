@@ -10,9 +10,9 @@ Height=@DISPLAY_HEIGHT@
 RefreshRate=@REFRESH_RATE@
 
 [User]
-Name=TestUser
-Email=test@example.com
-LastLogin=2023-01-01
+Name=@USER_NAME@
+Email=@USER_EMAIL@
+LastLogin=@USER_LAST_LOGIN@
 
 [Advanced]
 CacheSize=@CACHE_SIZE@

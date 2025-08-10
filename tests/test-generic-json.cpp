@@ -6,7 +6,7 @@
 
 #include <gtest/gtest.h>
 
-TEST(TestSettings, loadJsonFirstSection)
+TEST(TestSettingsGenericJson, loadFirstSection)
 {
     const std::filesystem::path json_path{test::settings::JSON_PATH};
 
@@ -19,7 +19,7 @@ TEST(TestSettings, loadJsonFirstSection)
     EXPECT_EQ(std::get<int>(section.values.at("Debug")), test::settings::DEBUG_MODE);
 }
 
-TEST(TestSettings, loadJsonAllSections)
+TEST(TestSettingsGenericJson, loadAllSections)
 {
     const std::filesystem::path json_path{test::settings::JSON_PATH};
 
@@ -32,10 +32,10 @@ TEST(TestSettings, loadJsonAllSections)
     EXPECT_EQ("Advanced", settings.at(3).name);
 }
 
-TEST(TestSettings, saveJson)
+TEST(TestSettingsGenericJson, save)
 {
     std::filesystem::path json_path{test::settings::JSON_PATH};
-    json_path.replace_filename("output.json");
+    json_path.replace_filename("generic.json");
     std::filesystem::remove(json_path);
     // clang-format off
     const settings::generic::Settings testSettings{
