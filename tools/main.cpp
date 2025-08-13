@@ -2,28 +2,100 @@
 #include <settings/generic.h>
 
 #include <boost/program_options.hpp>
+
+#include <algorithm>
 #include <iostream>
+#include <stdexcept>
 
 namespace po = boost::program_options;
 
 namespace
 {
 
-int generic(const po::variables_map &vm)
+settings::generic::Section &get_section( settings::generic::Settings &settings, const std::string &name )
 {
-    settings::generic::Settings settings = vm.count("json")
-        ? settings::generic::json::load(vm["json"].as<std::string>())
-        : settings::generic::ini::load(vm["ini"].as<std::string>());
+    const auto it{std::find_if(settings.begin(), settings.end(),
+        [&name](settings::generic::Section &section) { return section.name == name; })};
+    if (it != settings.end())
+    {
+        return *it;
+    }
+    throw std::runtime_error("Section not found: " + name);
+}
+
+void generic_update(settings::generic::Settings &settings ,const po::variables_map &vm)
+{
+    if (vm.count("application-name"))
+    {
+        get_section(settings, "General").values["ApplicationName"] = vm["application-name"].as<std::string>();
+    }
+    if (vm.count("application-version"))
+    {
+        get_section(settings, "General").values["Version"] = vm["application-version"].as<std::string>();
+    }
+    if (vm.count("application-debug"))
+    {
+        get_section(settings, "General").values["Debug"] = vm["application-debug"].as<int>();
+    }
+}
+
+int generic_ini(const std::string & file, const po::variables_map & vm)
+{
+    settings::generic::Settings settings = settings::generic::ini::load(file);
+    generic_update(settings, vm);
+    settings::generic::ini::save(settings, file);
     return 0;
 }
 
-int custom(const po::variables_map &vm)
+int generic_json(const std::string &file, const po::variables_map &vm)
 {
-    settings::custom::Settings settings = vm.count("json") ? settings::custom::json::load(vm["json"].as<std::string>())
-                                                           : settings::custom::ini::load(vm["ini"].as<std::string>());
+    settings::generic::Settings settings = settings::generic::json::load(file);
+    generic_update(settings, vm);
+    settings::generic::json::save(settings, file);
     return 0;
 }
 
+int generic(bool json, const std::string file, const po::variables_map &vm)
+{
+    return json ? generic_json(file, vm) : generic_ini(file, vm);
+}
+
+void custom_update(settings::custom::Settings &settings ,const po::variables_map &vm)
+{
+    if (vm.count("application-name"))
+    {
+        settings.general.application_name = vm["application-name"].as<std::string>();
+    }
+    if (vm.count("application-version"))
+    {
+        settings.general.version = vm["application-version"].as<std::string>();
+    }
+    if (vm.count("application-debug"))
+    {
+        settings.general.debug = vm["application-debug"].as<int>();
+    }
+}
+
+int custom_ini(const std::string &file, const po::variables_map &vm)
+{
+    settings::custom::Settings settings = settings::custom::ini::load(file);
+    custom_update(settings, vm);
+    settings::custom::ini::save(settings, file);
+    return 0;
+}
+
+int custom_json(const std::string &file, const po::variables_map &vm)
+{
+    settings::custom::Settings settings = settings::custom::json::load(file);
+    custom_update(settings, vm);
+    settings::custom::json::save(settings, file);
+    return 0;
+}
+
+int custom(bool json, const std::string &file, const po::variables_map &vm)
+{
+    return json ? custom_json(file, vm) : custom_ini(file, vm);
+}
 } // namespace
 
 int main(int argc, char *argv[])
@@ -55,5 +127,7 @@ int main(int argc, char *argv[])
         std::cout << desc << '\n';
         return 0;
     }
-    return vm.count("generic") ? generic(vm) : custom(vm);
+    const bool json{vm.count("json") != 0};
+    const std::string file{json ? vm["json"].as<std::string>() : vm["ini"].as<std::string>()};
+    return vm.count("generic") ? generic(json, file, vm) : custom(json, file, vm);
 }
