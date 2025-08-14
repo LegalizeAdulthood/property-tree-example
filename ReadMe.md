@@ -2,7 +2,7 @@
 
 # Boost.PropertyTree Example
 
-Sample code for the video Managing Settings with Boost.PropertyTree.
+Sample code for the video [Managing Settings with Boost.PropertyTree](https://www.youtube.com/watch?v=1xkEklFIPNc).
 
 # Obtaining the Source
 
