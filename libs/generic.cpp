@@ -93,7 +93,7 @@ Settings ptree_to_settings(boost::property_tree::ptree pt)
                 section.values[key] = item.second.get_value<double>();
                 break;
             case ValueType::TEXT:
-                section.values[key] = item.second.get_value<std::string>();;
+                section.values[key] = item.second.get_value<std::string>();
                 break;
             }
         }
